@@ -1,7 +1,3 @@
-volumes:
-  todo_app-postgres-data:
-  todo_app-redis-data:
-
 services:
   app:
     build:
