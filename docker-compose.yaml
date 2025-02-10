@@ -5,13 +5,15 @@ services:
       dockerfile: Dockerfile
     image: mtorreao/todo_app_rails
     environment:
-      - "SERVICE_FQDN_TODO_APP_RAILS_3000"
+      - "SERVICE_FQDN_TODO_APP_RAILS_3000"  
       - "RAILS_ENV=production"
       - "RAILS_MASTER_KEY=${SERVICE_RAILS_MASTER_KEY}"
+    volumes:
+      - todo_app-sqlite-data:/app/storage
   redis:
     image: "redis:7"
     volumes:
-      - "todo_app-redis-data:/data"
+      - todo_app-redis-data:/data
     command:
       - redis-server
       - "--maxmemory-policy"
@@ -24,3 +26,7 @@ services:
       interval: 5s
       timeout: 10s
       retries: 20
+
+volumes:
+  todo_app-sqlite-data: # Define persistent volume for SQLite
+  todo_app-redis-data: # Define persistent volume for Redis
