@@ -1,7 +1,8 @@
 class TodoList < ApplicationRecord
-  enable_cable_ready_updates
-  has_many :todo_items, enable_cable_ready_updates: true, dependent: :destroy
-
+  has_many :todo_items, dependent: :destroy
+  belongs_to :user
+  validates_presence_of :user
+  validates_length_of :title, minimum: 3, maximum: 100
 
   def completed_items
     todo_items.completed

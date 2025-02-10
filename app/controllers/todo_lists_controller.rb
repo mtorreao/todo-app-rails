@@ -14,6 +14,7 @@ class TodoListsController < ApplicationController
   # GET /todo_lists/new
   def new
     @todo_list = TodoList.new
+    @todo_list.user_id = resume_session.user.id
   end
 
   # GET /todo_lists/1/edit
@@ -66,6 +67,6 @@ class TodoListsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def todo_list_params
-      params.expect(todo_list: [ :title ])
+      params.expect(todo_list: [ :title, :user_id ])
     end
 end
