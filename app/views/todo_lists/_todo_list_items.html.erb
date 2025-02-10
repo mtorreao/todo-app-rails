@@ -1,0 +1,27 @@
+<% todo_list.sorted_items.each do |todo_item| %>
+  <li class="list-group-item list-group-item-action" style="height: 55px;">
+    <div class="d-flex justify-content-between align-items-center">
+    <% if todo_item.completed %>
+      <span class="text-muted">
+      <s><i><%= todo_item.description %></i></s>
+      </span>
+    <% else %>
+      <span>
+      <%= todo_item.description %>
+      </span>
+    <% end %>
+    <div class="d-flex justify-content-between align-items-center gap-2"> 
+      <%= link_to "#", class: if todo_item.completed then "btn btn-light btn-sm d-flex justify-content-center align-items-center" else "btn btn-light d-flex justify-content-center align-items-center" end, style: "width: 40px; height: 38px;", data: { reflex: "click->TodoItemReflex#toggle", id: todo_item.id } do %>
+      <% if todo_item.completed %>
+          <i class="bi bi-check2-circle" style="font-size: 1.5em;"></i>
+      <% else %>
+          <i class="bi bi-circle" style="font-size: 1.1em;"></i>
+      <% end %>
+      <% end %>
+      <%= link_to "#", class: "btn btn-danger btn-sm d-flex justify-content-center align-items-center", style: "width: 40px; height: 38px;", data: { reflex: "click->TodoItemReflex#delete", id: todo_item.id } do %>
+      <i class="bi bi-trash" style="font-size: 1.2em;"></i>
+      <% end %>
+    </div>
+    </div>
+  </li>
+<% end %>

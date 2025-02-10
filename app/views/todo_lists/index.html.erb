@@ -1,0 +1,17 @@
+<% content_for :title, "Todo lists" %>
+<p style="color: green"><%= notice %></p>
+
+<div class="card mt-5">
+
+  <%= render "card_header", todo_list: nil, title: "Todo Lists", back_path: nil, delete: false, edit: false, add: true %>
+
+  <div class="card-body">
+    <ul class="list-group ">
+      <% @todo_lists.each do |todo_list| %>
+        <li class="list-group-item">
+          <%= link_to todo_list.title, todo_list %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

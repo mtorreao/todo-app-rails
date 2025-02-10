@@ -1,0 +1,29 @@
+<% content_for :title, "Todo lists" %>
+<p style="color: green"><%= notice %></p>
+
+<div class="card mt-5">
+  <%= render "card_header", todo_list: @todo_list, title: @todo_list.title, back_path: todo_lists_path, delete: true, edit: true, add: false %>
+
+  <div class="card-body" data-reflex-root="[progressbar]">
+    <div class="progress mb-3" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+      <div progressbar class="progress-bar" style="width: <%= @todo_list.todo_items_percent_completed %>%"></div>
+    </div>
+    <div class="row mb-3 align-items-center">
+      <div class="col-4">
+        <h5 class="m-0">Todo items</h5>
+      </div>
+      <div class="col">
+        <%= form_for([@todo_list, @todo_item]) do |form| %>
+          <div class="input-group">
+            <%= form.text_field :description, class: "form-control", placeholder: "New todo item" %>
+            <button class="btn btn-primary" type="submit">New Todo</button>
+          </div>
+        <% end %>
+      </div>
+      <%# <%= link_to "New todo item", new_todo_list_todo_item_path(@todo_list), class: "btn btn-primary btn-sm" %>
+    </div>
+    <ul id="todo_list_items" class="list-group">
+      <%= render "todo_list_items", todo_list: @todo_list %>
+    </ul>
+  </div>
+</div>
