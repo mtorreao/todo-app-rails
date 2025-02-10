@@ -3,44 +3,16 @@ volumes:
   todo_app-redis-data:
 
 services:
-  # pgbouncer:
-  #   image: edoburu/pgbouncer:latest
-  #   environment:
-  #     - "AUTH_TYPE=scram-sha-256" # remove/comment this line if using postgres:13 and lower
-  #     - "POOL_MODE=session"
-  #     - "ADMIN_USERS=postgres"
-  #     - "DB_USER=${SERVICE_USER_POSTGRES:-postgres}"
-  #     - "DB_PASSWORD=${SERVICE_PASSWORD_POSTGRES:-postgres}"
-  #     - "DB_HOST=postgres"
-  #     - "DB_PORT=5432"
-  #     - "DB_NAME=${SERVICE_DB_POSTGRES:-postgres}"
-  #   ports:
-  #     - "${SERVICE_PORT_POSTGRESPOOLER:-6000}:5432"
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #   healthcheck:
-  #     test: ['CMD', 'pg_isready', '-h', 'localhost']
-
-  # postgres:
-  #   image: postgres:16-alpine
-  #   environment:
-  #     - "POSTGRES_USER=${SERVICE_USER_POSTGRES:-postgres}"
-  #     - "POSTGRES_PASSWORD=${SERVICE_PASSWORD_POSTGRES:-postgres}"
-  #     - "POSTGRES_DB=${SERVICE_DB_POSTGRES:-postgres}"
-  #   restart: unless-stopped
-  #   ports:
-  #     - "${SERVICE_PORT_POSTGRES:-6001}:5432"
-  #   volumes:
-  #     - todo_app-postgres-data:/var/lib/postgresql/data
-  #   healthcheck:
-  #     test:
-  #       - CMD-SHELL
-  #       - "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mtorreao/todo_app_rails
+    ports:
+      - "3000:3000"
+    environment:
+      - "RAILS_ENV=production"
+      - "RAILS_MASTER_KEY=${SERVICE_RAILS_MASTER_KEY}"
   redis:
     image: "redis:7"
     volumes:
@@ -49,8 +21,8 @@ services:
       - redis-server
       - "--maxmemory-policy"
       - noeviction
-    ports:
-      - "6379:6379"
+    # ports:
+      # - "6379:6379"
     healthcheck:
       test:
         - CMD
