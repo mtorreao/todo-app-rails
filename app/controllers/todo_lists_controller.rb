@@ -3,11 +3,16 @@ class TodoListsController < ApplicationController
 
   # GET /todo_lists or /todo_lists.json
   def index
-    @todo_lists = TodoList.all
+    @todo_lists = TodoList.where user_id: resume_session.user.id
   end
 
   # GET /todo_lists/1 or /todo_lists/1.json
   def show
+    user_id = resume_session.user.id
+    todo_list = TodoList.where user_id: user_id, id: params[:id]
+    if todo_list.nil?
+      redirect_to todo_lists_path
+    end
     @todo_item = TodoItem.new
   end
 
